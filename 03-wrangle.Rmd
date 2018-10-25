@@ -24,3 +24,47 @@ knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, comment = "#>")
 + **{tidyr}**
    - `gather()`
    - `spread()`
+
+
+
+
+## Figure 1
+
+<p alignt="center"> <img src="../img/fig1-og.png" /> </p>
+
+<p alignt="center"> <img src="../img/fig1.png" /> </p>
+
+<p alignt="center"> <img src="../img/fig1-facets.png" /> </p>
+
+## Figure 2
+
+<p alignt="center"> <img src="../img/fig2-og.png" /> </p>
+
+<p alignt="center"> <img src="../img/fig2.png" /> </p>
+
+<p alignt="center"> <img src="../img/fig2-facets.png" /> </p>
+
+## Figure 3
+
+<p alignt="center"> <img src="../img/fig3-og.png" /> </p>
+
+<p alignt="center"> <img src="../img/fig3.png" /> </p>
+
+<p alignt="center"> <img src="../img/fig3-facets.png" /> </p>
+
+
+## Figure 4
+
+<p alignt="center"> <img src="../img/fig4-og.png" /> </p>
+
+<p alignt="center"> <img src="../img/fig4.png" /> </p>
+
+<p alignt="center"> <img src="../img/fig4-facets.png" /> </p>
+
+## Figure 5
+
+<p alignt="center"> <img src="../img/fig5-og.png" /> </p>
+
+<p alignt="center"> <img src="../img/fig5.png" /> </p>
+
+<p alignt="center"> <img src="../img/fig5-facets.png" /> </p>

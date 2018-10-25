@@ -18,7 +18,6 @@ When you save the notebook, an HTML file containing the code and output will be 
 
 The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
-
 ## Build your repo
 
 ```{r, eval=FALSE}
@@ -33,29 +32,15 @@ usethis::use_course(
 
 ## R basics
 + Objects and classes
-   - `numeric`
-   - `integer`
-   - `logical`
-   - `character`
-   - `factor`
-   - `data.frame`
-   - `list`
 + Functions
-   - Operators
-   - Predefined tasks
 + Packages
-   - "R Core" **{base}** and `getOption("defaultPackages")`
-   - Install from CRAN `install.packages()`
-   - Install from Github `remotes::install_github()`
+   - To install/update the packages relevant to this workshop, run the code below.
 ```{r, eval=FALSE}
 ## install {here} package
 install.packages("here")
 
 ## run setup script to install workshop packages
 here::here("R", "setup-packages.R")
-
-## load tidyverse
-library(tidyverse)
 ```
 + Reading data
    - Comma separated value (.csv) `*.csv` `readr::read_csv()`
@@ -65,114 +50,9 @@ library(tidyverse)
    - Text `readr::read_lines()` `tfse::readlines()`
    - HTML source code `xml2::read_html()`
    - Download `download.file()`
-+ Web/front ends 
-   - **{rmarkdown}**
-   - **{blogdown}**
-   - **{shiny}**
 
-## Data sets
-+ [FiveThirtyEight data sets](https://github.com/fivethirtyeight)
-   - Kremlin troll tweetcs
-```{r eval=FALSE}
-tmpdir <- tempdir()
-usethis::use_course(
-   "https://github.com/fivethirtyeight/russian-troll-tweets/archive/master.zip",
-   destdir = tmpdir
-)
-files <- list.files(
-  file.path(tmpdir, "russian-troll-tweets-master"), 
-  full.names = TRUE, pattern = "\\.csv$"
-)
-
-## make sure ID variables are treated as character (not numeric)
-col_types <- readr::cols(
-   external_author_id = col_character(),
-   alt_external_id = col_character(),
-   tweet_id = col_character(),
-   publish_date = col_datetime(format = "%m/%e/%Y %H:%M"),
-   harvested_date = col_datetime(format = "%m/%e/%Y %H:%M")
-)
-
-## read all CSV files
-d <- map(files, read_csv, col_types = col_types)
-
-## cleanup files
-unlink(files)
-
-## collapse into single data frame
-d <- bind_rows(d)
-
-## preview data
-d
-#> # A tibble: 2,946,207 x 21
-#>    external_author… author content region language publish_date        harvested_date      following
-#>    <chr>            <chr>  <chr>   <chr>  <chr>    <dttm>              <dttm>                  <int>
-#>  1 906000000000000… 10_GOP "\"We … Unkno… English  2017-10-01 19:58:00 2017-10-01 19:59:00      1052
-#>  2 906000000000000… 10_GOP Marsha… Unkno… English  2017-10-01 22:43:00 2017-10-01 22:43:00      1054
-#>  3 906000000000000… 10_GOP Daught… Unkno… English  2017-10-01 22:50:00 2017-10-01 22:51:00      1054
-#>  4 906000000000000… 10_GOP JUST I… Unkno… English  2017-10-01 23:52:00 2017-10-01 23:52:00      1062
-#>  5 906000000000000… 10_GOP 19,000… Unkno… English  2017-10-01 02:13:00 2017-10-01 02:13:00      1050
-#>  6 906000000000000… 10_GOP "Dan B… Unkno… English  2017-10-01 02:47:00 2017-10-01 02:47:00      1050
-#>  7 906000000000000… 10_GOP 🐝🐝🐝 ht… Unkno… English  2017-10-01 02:48:00 2017-10-01 02:48:00      1050
-#>  8 906000000000000… 10_GOP '@Sena… Unkno… English  2017-10-01 02:52:00 2017-10-01 02:53:00      1050
-#>  9 906000000000000… 10_GOP As muc… Unkno… English  2017-10-01 03:47:00 2017-10-01 03:47:00      1050
-#> 10 906000000000000… 10_GOP After … Unkno… English  2017-10-01 03:51:00 2017-10-01 03:51:00      1050
-#> # … with 2,946,197 more rows, and 13 more variables: followers <int>, updates <int>, post_type <chr>,
-#> #   account_type <chr>, retweet <int>, account_category <chr>, new_june_2018 <int>,
-#> #   alt_external_id <chr>, tweet_id <chr>, article_url <chr>, tco1_step1 <chr>, tco2_step1 <chr>,
-#> #   tco3_step1 <chr>
-```
-
-
-```{r}
-## read-in random sample (N = 100,000) of russia-troll-tweets data
-s <- readRDS(
-  here::here("data", "russian-troll-tweets-100k-sample.rds")
-)
-```
-
-+ ProPublica/Sunshine
-
-
-## Figure 1
-
-<p alignt="center"> <img src="../img/fig1-og.png" /> </p>
-
-<p alignt="center"> <img src="../img/fig1.png" /> </p>
-
-<p alignt="center"> <img src="../img/fig1-facets.png" /> </p>
-
-## Figure 2
-
-<p alignt="center"> <img src="../img/fig2-og.png" /> </p>
-
-<p alignt="center"> <img src="../img/fig2.png" /> </p>
-
-<p alignt="center"> <img src="../img/fig2-facets.png" /> </p>
-
-## Figure 3
-
-<p alignt="center"> <img src="../img/fig3-og.png" /> </p>
-
-<p alignt="center"> <img src="../img/fig3.png" /> </p>
-
-<p alignt="center"> <img src="../img/fig3-facets.png" /> </p>
-
-
-## Figure 4
-
-<p alignt="center"> <img src="../img/fig4-og.png" /> </p>
-
-<p alignt="center"> <img src="../img/fig4.png" /> </p>
-
-<p alignt="center"> <img src="../img/fig4-facets.png" /> </p>
-
-## Figure 5
-
-<p alignt="center"> <img src="../img/fig5-og.png" /> </p>
-
-<p alignt="center"> <img src="../img/fig5.png" /> </p>
-
-<p alignt="center"> <img src="../img/fig5-facets.png" /> </p>
-
-
+## Rstudio features
++ Clickables (meh)
++ Rmarkdown notebooks
++ `.Rproj` + **{here}**
++ Works well with other languages/database infrasturctures

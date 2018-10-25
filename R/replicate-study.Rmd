@@ -27,9 +27,7 @@ files <- list.files(
 col_types <- readr::cols(
   external_author_id = readr::col_character(),
   alt_external_id = readr::col_character(),
-  tweet_id = readr::col_character()#,
-  #publish_date = readr::col_datetime(format = "%m/%e/%Y %H:%M"),
-  #harvested_date = readr::col_datetime(format = "%m/%e/%Y %H:%M")
+  tweet_id = readr::col_character()
 )
 
 ## read all CSV files
@@ -43,8 +41,7 @@ if (any(file.exists(files))) {
 ## collapse into single data frame
 d <- bind_rows(d)
 
-
-## formate date
+## define function to format date
 formate_date_char <- function(x) {
   i <- grep("^[1-9]/", x$publish_date)
   x$publish_date[i] <- paste0("0", x$publish_date[i])
@@ -55,10 +52,11 @@ formate_date_char <- function(x) {
   x$publish_date <- as.POSIXct(x$publish_date, format = "%m/%d/%Y %H:%M")
   x
 }
+## reformat the publish_date variable
 d <- formate_date_char(d)
 
-## slimmed down data set (top four groups, must have publish date, and 
-## only select relevant columns)
+## create a slimmed down version of the data (top four groups, must have 
+##   publish date, and only select a couple of columns)
 dat <- d %>%
   filter(account_type %in% c("Left", "Right", "news", "Hashtager"), 
     !is.na(publish_date)) %>%

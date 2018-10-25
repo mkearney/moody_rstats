@@ -3,13 +3,18 @@
 pkgs <- c(
   "tidyverse",
   "gbm",
+  "haven",
+  "here",
   "keras",
   "kerasformula",
+  "readxl",
   "remotes",
   "rtweet",
   "rvest",
+  "tfse",
   "tidytext",
   "tidyverse",
+  "usethis",
   "quanteda"
 )
 
