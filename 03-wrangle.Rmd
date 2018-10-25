@@ -1,0 +1,26 @@
+---
+title: "03-Data-Wrangling"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, comment = "#>")
+```
+
++ **{magrittr}**'s `%>%` (pipe)
+   - Linar operations
++ **{dplyr}**
+   - `select()`
+   - `filter()`
+   - `mutate()`
+   - `group_by()`
+   - `summarize()`
+   - Join/bind data frames
+      - `left_join()`
+      - `right_join()`
+      - `full_join()`
+      - `bind_cols()`
+      - `bind_rows()`
++ **{tidyr}**
+   - `gather()`
+   - `spread()`

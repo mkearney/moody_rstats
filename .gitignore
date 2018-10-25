@@ -1,0 +1,7 @@
+.Rhistory
+.RData
+.Rproj.user
+slides/*.Rmd
+.DS_Store
+data/russian-troll-tweets.fst
+notes

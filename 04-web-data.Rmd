@@ -1,0 +1,21 @@
+---
+title: "04-Web-Data"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, comment = "#>")
+```
+
++ Web scraping
+   - **{rvest}** `xml2::read_html()`
+   - Using "inspect(or)" in web browser
+   - `html_nodes()`, `html_text()`, `html_table()`
++ APIs
+   - **{httr}** `GET()` and `POST()`
+   - **{oauth}** authorization keys and tokens
+   - **{jsonlite}** `fromJSON()`
++ Examples
+   - **{nytimes}**
+   - **{newsAPI}**
+   - **{propublica}**

@@ -1,0 +1,15 @@
+---
+title: "06-Machine-Learning"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, comment = "#>")
+```
+
++ Gradient models **{gbm}**
+   - **{tweetbotornot}**
+   - Verified vs non-verified
++ Neural networks
+   - Tensorflow and **{keras}**
+   - Tweets with **{kerasformula}**

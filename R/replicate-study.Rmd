@@ -1,0 +1,246 @@
+---
+output: github_document
+---
+
+## Read data
+
+```{r}
+## load tidyverse
+library(tidyverse)
+
+## create temp directory
+tmpdir <- tempdir()
+
+## download zip archive
+usethis::use_course(
+  "https://github.com/fivethirtyeight/russian-troll-tweets/archive/master.zip",
+  destdir = tmpdir
+)
+
+## store vector of the downloaded CSV paths
+files <- list.files(
+  file.path(tmpdir, "russian-troll-tweets-master"),
+  full.names = TRUE, pattern = "\\.csv$"
+)
+
+## specify col types to make sure ID variables are character (not numeric)
+col_types <- readr::cols(
+  external_author_id = readr::col_character(),
+  alt_external_id = readr::col_character(),
+  tweet_id = readr::col_character()#,
+  #publish_date = readr::col_datetime(format = "%m/%e/%Y %H:%M"),
+  #harvested_date = readr::col_datetime(format = "%m/%e/%Y %H:%M")
+)
+
+## read all CSV files
+d <- purrr::map(files, read_csv, col_types = col_types)
+
+## cleanup files if not already removed
+if (any(file.exists(files))) {
+  unlink(files)
+}
+
+## collapse into single data frame
+d <- bind_rows(d)
+
+
+## formate date
+formate_date_char <- function(x) {
+  i <- grep("^[1-9]/", x$publish_date)
+  x$publish_date[i] <- paste0("0", x$publish_date[i])
+  i <- grep("^\\d{2}/\\d{1}/", x$publish_date)
+  x$publish_date[i] <- sub("/", "/0", x$publish_date[i])
+  i <- grep("201\\d [1-9]:", x$publish_date)
+  x$publish_date[i] <- sub(" ", " 0", x$publish_date[i])
+  x$publish_date <- as.POSIXct(x$publish_date, format = "%m/%d/%Y %H:%M")
+  x
+}
+d <- formate_date_char(d)
+
+## slimmed down data set (top four groups, must have publish date, and 
+## only select relevant columns)
+dat <- d %>%
+  filter(account_type %in% c("Left", "Right", "news", "Hashtager"), 
+    !is.na(publish_date)) %>%
+  select(account_type, publish_date)
+```
+
+Define some custom functions for plotting theme and various shortcuts.
+
+```{r}
+## function to format plot labels
+moody_labels <- function(unit, start_date, end_date) {
+  ## match unit
+  unit <- tfse::match_arg(
+    unit, c("hours", "days", "weeks", "2 weeks", "months"))
+  ## format depending on title
+  if (unit == "hours") {
+    units <- c("hour", "Hourly")
+  }
+  if (unit == "days") {
+    units <- c("day", "Daily")
+  }
+  if (unit == "weeks") {
+    units <- c("week", "Weekly")
+  }
+  if (unit == "2 weeks") {
+    units <- c("2 weeks", "Biweekly")
+  }
+  if (unit == "months") {
+    units <- c("month", "Monthly")
+  }
+  ## format dates into better looking labels
+  start_date <- format(as.Date(start_date), "%b %d, %Y")
+  end_date <- format(as.Date(end_date), "%b %d, %Y")
+  ## title and subtitle
+  title <- paste0(units[2], " tweet counts from ", start_date, " to ", end_date)
+  subtitle <- paste0("Among most common account types in ", 
+    "FiveThirtyEight troll-tweets data")
+  ## y axis
+  y_axis <- paste0("Tweets per ", units[1])
+  ## output labels
+  labs(x = NULL, y = y_axis,
+    title = title,
+    subtitle = subtitle,
+    caption = tfse::theme_mwk_caption_text())
+}
+## moody theme (you'll need to install Libre Franklin: 
+## https://fonts.google.com/specimen/Libre+Franklin?selection.family=Libre+Franklin)
+moody_theme <- function() {
+  tfse::theme_mwk(base_size = 12, base_family = "Libre Franklin") +
+    theme(panel.grid.major = ggplot2::element_line(
+      color = "#000000", size = ggplot2::rel(.020)),
+    panel.grid.minor = ggplot2::element_line(
+      color = "#000000", size = ggplot2::rel(.010)),
+      legend.position = "none")
+}
+## based on UT identity colors
+moody_colors <- function() {
+  scale_color_manual(values = c(Left = "#333f48", Right = "#bf5700",
+    news = "#a6cd57", Hashtager = "#579d42"))
+}
+## better visualize each type
+moody_facets <- function(free_y = TRUE) {
+  if (free_y) {
+    scale_y <- "free_y"
+  } else {
+    scale_y <- NULL
+  }
+  facet_wrap(~ account_type, ncol = 1, scales = scale_y, 
+    strip.position = "right")
+}
+## save shortcut
+moody_save <- function(name) {
+  ggsave(here::here("img", name), width = 7.5, height = 5.75, units = "in")
+}
+```
+
+Main plotting function. 
+
+```{r}
+## replication figure function
+replicate_fig <- function(dat, unit,
+                          start_date, 
+                          end_date, 
+                          types) {
+  ## twitter data is in UTC time
+  Sys.setenv(TZ = "UTC")
+  ## filter by type and date, rename date to 'created_at', group by 
+  ## account_type, convert to time-series-like data frame, and plot
+  filter(dat, account_type %in% types,
+      publish_date >= start_date,
+      publish_date <= end_date) %>%
+    select(account_type, created_at = publish_date) %>%
+    group_by(account_type) %>%
+    rtweet::ts_plot(unit) + 
+    moody_labels(unit, start_date, end_date) + 
+    moody_theme() + 
+    moody_colors()
+}
+```
+
+
+## Figure 1
+
+```{r}
+## Figure 1
+p1 <- dat %>% 
+  replicate_fig(unit = "days", 
+    start_date = "2015-06-19", 
+    end_date = "2017-12-31",
+    types = c("Left", "Right")) 
+## save combined and faceted plots
+p1 + 
+  moody_save("fig1.png")
+p1 + 
+  moody_facets() + 
+  moody_save("fig1-facets.png")
+```
+
+## Figure 2
+
+```{r}
+## Figure 2
+p2 <- dat %>% 
+  replicate_fig(unit = "days", 
+    start_date = "2015-06-19", 
+    end_date = "2017-12-31",
+    types = c("news", "Hashtager"))
+## save combined and faceted plots
+p2 + 
+  moody_save("fig2.png")
+p2 + 
+  moody_facets() + 
+  moody_save("fig2-facets.png")
+```
+
+## Figure 3
+
+```{r}
+## Figure 3
+p3 <- dat %>% 
+  replicate_fig(unit = "hours", 
+    start_date = "2016-10-05", 
+    end_date = "2016-10-08",
+    types = c("Left", "Right", "news", "Hashtager"))
+## save combined and faceted plots
+p3 + 
+  moody_save("fig3.png")
+p3 + 
+  moody_facets() + 
+  moody_save("fig3-facets.png")
+```
+
+## Figure 4
+
+```{r}
+## Figure 4
+p4 <- dat %>% 
+  replicate_fig(unit = "hours", 
+    start_date = "2016-10-18", 
+    end_date = "2016-10-20",
+    types = c("Left", "Right", "news", "Hashtager"))
+## save combined and faceted plots
+p4 + 
+  moody_save("fig4.png")
+p4 + 
+  moody_facets() + 
+  moody_save("fig4-facets.png")
+```
+
+## Figure 5
+
+```{r}
+## Figure 5
+p5 <- dat %>% 
+  replicate_fig(unit = "hours", 
+    start_date = "2016-09-11", 
+    end_date = "2016-09-20",
+    types = c("Left", "Right", "news", "Hashtager"))
+## save combined and faceted plots
+p5 + 
+  moody_save("fig5.png")
+p5 + 
+  moody_facets() + 
+  moody_save("fig5-facets.png")
+```

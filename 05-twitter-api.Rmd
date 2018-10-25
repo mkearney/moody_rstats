@@ -1,0 +1,25 @@
+---
+title: "05-Twitter-Data"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, comment = "#>")
+```
+
+Featuring [**{{rtweet}}**](https://rtweet.info)
+
++ Statuses
+   - `search_tweets()`
+   - `stream_tweets()`
+   - `get_timeline()`
+   - `get_favorites()`
+   - `lookup_tweets()`
++ Friends/followers
+   - `get_friends()`
+   - `get_followers()`
++ Other
+   - `search_users()`
+   - `lookup_trends()`
+   - `lists_members()`
+   - `lists_memberships()`
