@@ -14,6 +14,11 @@ sessions, is provided below. Note that each section has a corresponding
 *follow-along* Rmarkdown document, which can be found in the main folder
 in this repository.
 
+### Github repo
+
+This is probably the best place to go:
+[github.com/mkearney/moody\_rstats](https://github.com/mkearney/moody_rstats)
+
 ### 1: Intro to R/Rstudio
 
   - [Slides](slides/01-intro-r-and-rstudio-slides.html)
@@ -43,3 +48,13 @@ in this repository.
 
   - [Slides](slides/06-machine-learning-slides.html)
   - [Notebook](06-machine-learning.Rmd)
+
+## Acknowledgements
+
+I have forked this repo from [Charlotte
+Wickham](https://github.com/cwickham/data-science-in-tidyverse), who
+forked it from
+[RStudio](https://github.com/rstudio/master-the-tidyverse). Thanks to
+[Charlotte](http://cwick.co.nz) and
+[Garrett](https://github.com/garrettgman) for creating the slides and
+accompanying materials\!
