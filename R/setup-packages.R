@@ -19,7 +19,9 @@ pkgs <- c(
 )
 
 ## version numbers
-pkg_versions <- lapply(pkgs, packageVersion)
+pkg_versions <- lapply(pkgs,
+  function(x) tryCatch(packageVersion,
+  error = function(e) NULL))
 names(pkg_versions) <- pkgs
 
 ## installed packages
