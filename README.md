@@ -14,39 +14,32 @@ sessions, is provided below. Note that each section has a corresponding
 *follow-along* Rmarkdown document, which can be found in the main folder
 in this repository.
 
-### [1: Intro to R/Rstudio](01-setup.Rmd)
+### 1: Intro to R/Rstudio
 
-  - Intro to R/Rstudio
-  - Setting up packages
-  - R basics
-  - Data sets
+  - [Slides](slides/01-intro-r-and-rstudio-slides.html)
+  - [Notebook](01-setup.Rmd)
 
-### [2: Data vizualization](02-visualize.Rmd)
+### 2: Data vizualization
 
-  - Intro to **{tidyverse}**
-  - Data visualization
-  - Data frames
-  - R projects `.Rproj`
+  - [Slides](slides/02-visualize-slides.html)
+  - [Notebook](02-visualize.Rmd)
 
-### [3: Data wrangling](03-wrangle.Rmd)
+### 3: Data wrangling
 
-  - **{magrittr}**’s `%>%` (pipe)
-  - **{dplyr}**
-  - **{tidyr}**
+  - [Slides](slides/03-wrangle.html)
+  - [Notebook](03-wrangle.Rmd)
 
-### [4: Web data](04-web-data.Rmd)
+### 4: Web data
 
-  - Web scraping
-  - APIs
-  - Examples
+  - [Slides](slides/04-web-data-slides.html)
+  - [Notebook](04-web-data.Rmd)
 
-### [5: Twitter API (rtweet)](05-twitter-api.Rmd)
+### 5: Twitter API (rtweet)
 
-  - Statuses
-  - Friends/followers
-  - Other
+  - [Slides](slides/05-twitter-api-slides.Rmd)
+  - [Notebook](05-twitter-api.Rmd)
 
-### [6: Machine learning](06-machine-learning.Rmd)
+### 6: Machine learning
 
-  - Gradient models **{gbm}**
-  - Neural networks
+  - [Slides](slides/06-machine-learning-slides.html)
+  - [Notebook](06-machine-learning.Rmd)
